@@ -52,6 +52,12 @@ body{
 
 a{color:inherit}
 
+/* Ensure decor never softens UI */
+.topbar, .main, .footer, .room, .panel, .content, .sidebar{
+  position: relative;
+  z-index: 10;
+}
+
 .app{
   min-height:100%;
   position:relative;
@@ -326,7 +332,7 @@ a{color:inherit}
   border:1px solid var(--line);
   border-radius: 18px;
   padding: 14px;
-  background: rgba(0,0,0,.16);
+  background: rgba(0,0,0,.18);
   position:relative;
   overflow:hidden;
 }
@@ -339,8 +345,8 @@ a{color:inherit}
   content:"";
   position:absolute; inset:-2px;
   background:
-    radial-gradient(500px 180px at 30% 0%, rgba(211,176,107,.12), transparent 60%),
-    radial-gradient(400px 160px at 80% 20%, rgba(181,27,42,.10), transparent 55%),
+    radial-gradient(500px 180px at 30% 0%, rgba(211,176,107,.10), transparent 60%),
+    radial-gradient(400px 160px at 80% 20%, rgba(181,27,42,.08), transparent 55%),
     linear-gradient(180deg, rgba(255,255,255,.03), transparent 35%);
   pointer-events:none;
   opacity: .75;
@@ -402,7 +408,6 @@ a{color:inherit}
   width: 10px; height: 10px; border-radius: 99px;
   border:1px solid var(--line);
   background: rgba(255,255,255,.06);
-  box-shadow: 0 0 0 rgba(181,27,42,0);
 }
 .sigil--showing{background: rgba(211,176,107,.20); border-color: rgba(211,176,107,.35)}
 .sigil--input{background: rgba(106,76,255,.20); border-color: rgba(106,76,255,.35)}
@@ -420,7 +425,9 @@ a{color:inherit}
 }
 .candle{
   border:1px solid var(--line);
-  background: rgba(255,255,255,.02);
+  background:
+    radial-gradient(160px 120px at 50% 25%, rgba(255,255,255,.05), transparent 60%),
+    rgba(255,255,255,.02);
   border-radius: 18px;
   padding: 14px 10px 10px 10px;
   cursor:pointer;
@@ -440,8 +447,8 @@ a{color:inherit}
   height: 70px;
   transform: translateX(-50%);
   border-radius: 14px;
-  background: linear-gradient(180deg, rgba(233,231,242,.22), rgba(233,231,242,.07));
-  border: 1px solid rgba(255,255,255,.08);
+  background: linear-gradient(180deg, rgba(233,231,242,.24), rgba(233,231,242,.08));
+  border: 1px solid rgba(255,255,255,.09);
   box-shadow: inset 0 -20px 40px rgba(0,0,0,.25);
 }
 .candle__base{
@@ -452,8 +459,8 @@ a{color:inherit}
   height: 14px;
   transform: translateX(-50%);
   border-radius: 999px;
-  background: rgba(0,0,0,.28);
-  border:1px solid rgba(255,255,255,.08);
+  background: rgba(0,0,0,.30);
+  border:1px solid rgba(255,255,255,.10);
 }
 .candle__flame{
   position:absolute;
@@ -462,29 +469,36 @@ a{color:inherit}
   width: 14px;
   height: 22px;
   transform: translateX(-50%);
-  border-radius: 999px 999px 999px 999px;
-  background: radial-gradient(circle at 50% 30%, rgba(255,255,255,.9), rgba(211,176,107,.85) 40%, rgba(181,27,42,.12) 70%, transparent 74%);
-  filter: blur(.2px);
-  opacity: .25;
+  border-radius: 999px;
+  background: radial-gradient(circle at 50% 30%, rgba(255,255,255,.95), rgba(211,176,107,.90) 40%, rgba(181,27,42,.14) 70%, transparent 74%);
+  opacity: .18;
+  filter: blur(0px);
 }
+
 .candle--lit{
-  border-color: rgba(211,176,107,.45);
-  box-shadow: 0 18px 60px rgba(211,176,107,.08);
+  border-color: rgba(211,176,107,.60);
+  box-shadow:
+    0 22px 80px rgba(211,176,107,.10),
+    inset 0 0 0 1px rgba(211,176,107,.10);
 }
 .candle--lit .candle__flame{
-  opacity: calc(.45 + .35 * var(--flicker));
-  animation: flicker calc(900ms / max(.35, var(--flicker))) infinite;
+  opacity: 1;
+  animation: flicker calc(760ms / max(.35, var(--flicker))) infinite;
+  filter: drop-shadow(0 0 10px rgba(211,176,107,.65))
+          drop-shadow(0 0 18px rgba(181,27,42,.18));
 }
 .candle--lit:after{
   content:"";
-  position:absolute; inset:-20px;
-  background: radial-gradient(120px 120px at 50% 55%, rgba(211,176,107,.18), transparent 60%);
+  position:absolute; inset:-40px;
+  background:
+    radial-gradient(220px 220px at 50% 50%, rgba(211,176,107,.22), transparent 62%),
+    radial-gradient(160px 160px at 50% 50%, rgba(255,255,255,.06), transparent 70%);
   pointer-events:none;
 }
 
 @keyframes flicker{
   0%{transform: translateX(-50%) scale(1)}
-  50%{transform: translateX(-50%) scale(1.05)}
+  50%{transform: translateX(-50%) scale(1.08)}
   100%{transform: translateX(-50%) scale(.98)}
 }
 
@@ -649,6 +663,7 @@ a{color:inherit}
   inset:0;
   opacity:0;
   cursor:pointer;
+  z-index:2;
 }
 .toggle__knob{
   position:absolute;
@@ -692,15 +707,14 @@ a{color:inherit}
   max-width: 320px;
 }
 
-/* Decor: webs, bats, spiders, markers, crosses, poltergeist */
+/* Decor: webs, bats, spiders, markers, crosses, ghosts, snakes, poltergeist */
 .web{
   position:fixed;
   width: 260px;
   height: 260px;
   opacity: var(--webOpacity);
   pointer-events:none;
-  z-index:5;
-  filter: blur(.2px);
+  z-index:2;
   background:
     repeating-linear-gradient(45deg, rgba(255,255,255,.10) 0 1px, transparent 1px 14px),
     repeating-linear-gradient(-20deg, rgba(255,255,255,.08) 0 1px, transparent 1px 16px);
@@ -716,7 +730,8 @@ a{color:inherit}
   position:fixed;
   inset:0;
   pointer-events:none;
-  z-index:6;
+  z-index:2;
+  opacity:.85;
 }
 .bat{
   position:absolute;
@@ -724,9 +739,9 @@ a{color:inherit}
   height: 10px;
   border-radius: 10px;
   background: rgba(233,231,242,.16);
-  filter: blur(.1px);
   opacity:.75;
   box-shadow: 0 10px 30px rgba(0,0,0,.45);
+  animation: flap calc(380ms / max(.35, var(--motion))) ease-in-out infinite;
 }
 .bat:before,.bat:after{
   content:"";
@@ -741,9 +756,17 @@ a{color:inherit}
 }
 .bat:before{left:-6px}
 .bat:after{right:-6px; transform: rotate(225deg)}
+
+@keyframes flap{
+  0%,100%{transform: scaleX(1) translateY(0)}
+  50%{transform: scaleX(.85) translateY(-1px)}
+}
+
 .bat--1{top: 18%; left: -10%; animation: fly1 calc(12s / max(.35, var(--motion))) linear infinite}
 .bat--2{top: 10%; left: -18%; animation: fly2 calc(16s / max(.35, var(--motion))) linear infinite}
 .bat--3{top: 26%; left: -12%; animation: fly3 calc(20s / max(.35, var(--motion))) linear infinite}
+.bat--4{top: 14%; left: -14%; animation: fly2 calc(13s / max(.35, var(--motion))) linear infinite}
+.bat--5{top: 32%; left: -20%; animation: fly1 calc(18s / max(.35, var(--motion))) linear infinite}
 
 @keyframes fly1{
   0%{transform: translateX(0) translateY(0) scale(1)}
@@ -761,12 +784,11 @@ a{color:inherit}
 /* Spiders */
 .spider{
   position:fixed;
-  z-index:6;
+  z-index:2;
   width: 20px;
   height: 20px;
   pointer-events:none;
   opacity:.7;
-  filter: blur(.1px);
 }
 .spider:before{
   content:"";
@@ -801,39 +823,38 @@ a{color:inherit}
   position:fixed;
   inset:0;
   pointer-events:none;
-  z-index:4;
-  opacity:.45;
+  z-index:2;
+  opacity:.22;
 }
 .marker{
   position:absolute;
-  width: 34px; height: 34px;
+  width: 30px; height: 30px;
   border-radius: 10px;
   display:flex; align-items:center; justify-content:center;
-  border:1px solid rgba(211,176,107,.28);
-  color: rgba(211,176,107,.85);
-  background: rgba(0,0,0,.16);
+  border:1px solid rgba(211,176,107,.22);
+  color: rgba(211,176,107,.65);
+  background: rgba(0,0,0,.14);
   font-weight: 900;
   letter-spacing:.06em;
   transform: rotate(-6deg);
 }
-.marker--1{bottom: 14%; right: 10%}
-.marker--2{top: 62%; left: 44%}
-.marker--3{top: 22%; right: 34%}
+.marker--1{bottom: 10%; right: 6%}
+.marker--2{top: 70%; left: 8%}
+.marker--3{top: 18%; right: 18%}
 
 /* Inverted crosses */
 .crosses{
   position:fixed;
   inset:0;
   pointer-events:none;
-  z-index:4;
-  opacity:.28;
+  z-index:2;
+  opacity:.22;
 }
 .cross{
   position:absolute;
   width: 18px; height: 44px;
-  background: rgba(233,231,242,.14);
+  background: rgba(233,231,242,.12);
   border-radius: 6px;
-  filter: blur(.08px);
 }
 .cross:before{
   content:"";
@@ -842,34 +863,104 @@ a{color:inherit}
   left:50%;
   top: 8px;
   transform: translateX(-50%);
-  background: rgba(233,231,242,.14);
+  background: rgba(233,231,242,.12);
   border-radius: 6px;
 }
-.cross--1{
-  top: 12%;
-  left: 7%;
-  transform: rotate(180deg);
+.cross--1{top: 12%; left: 7%; transform: rotate(180deg)}
+.cross--2{bottom: 18%; left: 16%; transform: rotate(180deg)}
+
+/* Ghosts */
+.ghosts{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:2;
+  opacity: calc(.72 * var(--haze));
 }
-.cross--2{
-  bottom: 18%;
-  left: 16%;
-  transform: rotate(180deg);
+.ghost{
+  position:absolute;
+  width: 120px;
+  height: 160px;
+  border-radius: 80px 80px 60px 60px;
+  background:
+    radial-gradient(circle at 50% 25%, rgba(255,255,255,.10), transparent 60%),
+    linear-gradient(180deg, rgba(233,231,242,.10), rgba(233,231,242,.03));
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 30px 120px rgba(0,0,0,.35);
+  mask: radial-gradient(circle at 50% 20%, #000 0 60%, transparent 86%);
+}
+.ghost:after{
+  content:"";
+  position:absolute;
+  left: 18px;
+  top: 52px;
+  width: 10px;
+  height: 10px;
+  border-radius: 99px;
+  background: rgba(211,176,107,.22);
+  box-shadow: 42px 0 0 rgba(211,176,107,.22);
+  opacity: .75;
+}
+.ghost--1{top: 22%; left: 8%; animation: ghostDrift calc(10s / max(.35, var(--motion))) ease-in-out infinite}
+.ghost--2{top: 48%; right: 10%; animation: ghostDrift calc(12s / max(.35, var(--motion))) ease-in-out infinite reverse}
+.ghost--3{bottom: 14%; left: 40%; animation: ghostDrift calc(14s / max(.35, var(--motion))) ease-in-out infinite}
+@keyframes ghostDrift{
+  0%,100%{transform: translate3d(0,0,0); opacity:.26}
+  45%{transform: translate3d(14px,-10px,0); opacity:.42}
+  70%{transform: translate3d(-12px,8px,0); opacity:.30}
 }
 
-/* Poltergeist layer */
+/* Snakes */
+.snakes{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:2;
+  opacity: .26;
+}
+.snake{
+  position:absolute;
+  height: 18px;
+  width: 280px;
+  border-radius: 999px;
+  border: 1px solid rgba(181,27,42,.18);
+  background:
+    repeating-linear-gradient(90deg, rgba(233,231,242,.06) 0 8px, transparent 8px 18px),
+    rgba(0,0,0,.10);
+  filter: drop-shadow(0 10px 30px rgba(0,0,0,.45));
+}
+.snake--1{
+  bottom: 8%;
+  left: -30%;
+  animation: slither calc(16s / max(.35, var(--motion))) linear infinite;
+}
+.snake--2{
+  bottom: 12%;
+  left: -45%;
+  animation: slither calc(22s / max(.35, var(--motion))) linear infinite;
+  opacity:.75;
+}
+@keyframes slither{
+  0%{transform: translateX(0) translateY(0) rotate(.6deg)}
+  50%{transform: translateX(85vw) translateY(-8px) rotate(-.6deg)}
+  100%{transform: translateX(160vw) translateY(0) rotate(.6deg)}
+}
+
+/* Poltergeist layer (non-destructive) */
 .poltergeist{
   position:fixed;
   inset:-60px;
   pointer-events:none;
-  z-index:3;
+  z-index:1;
   background:
-    radial-gradient(600px 260px at 15% 20%, rgba(255,255,255,.06), transparent 65%),
-    radial-gradient(700px 300px at 80% 65%, rgba(255,255,255,.04), transparent 65%),
-    radial-gradient(500px 220px at 60% 10%, rgba(181,27,42,.05), transparent 60%);
-  opacity: calc(.45 * var(--haze));
-  mix-blend-mode: screen;
+    radial-gradient(600px 260px at 15% 20%, rgba(255,255,255,.05), transparent 65%),
+    radial-gradient(700px 300px at 80% 65%, rgba(255,255,255,.035), transparent 65%),
+    radial-gradient(500px 220px at 60% 10%, rgba(181,27,42,.045), transparent 60%);
+  opacity: calc(.38 * var(--haze));
+  mix-blend-mode: normal;
   animation: haunt calc(5.8s / max(.35, var(--motion))) ease-in-out infinite;
   transform-origin: 50% 50%;
+  filter: none;
 }
 @keyframes haunt{
   0%,100%{transform: translate3d(0,0,0) rotate(0)}
@@ -877,12 +968,11 @@ a{color:inherit}
   60%{transform: translate3d(10px,-6px,0) rotate(.25deg)}
 }
 
-/* Occasional shake on panels. Low intensity reduces it */
+/* Motion safety */
 @media (prefers-reduced-motion: reduce){
   :root{--motion: 0.2; --shake: 0.2; --flicker: 0.2}
 }
 
-/* Minor utility */
 .muted{color: var(--muted)}
 
 /* Responsive */

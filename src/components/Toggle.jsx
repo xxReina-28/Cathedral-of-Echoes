@@ -7,7 +7,8 @@ export default function Toggle({ label, value, onChange, hint }) {
         <span className="toggle__label">{label}</span>
         {hint ? <span className="toggle__hint">{hint}</span> : null}
       </span>
-      <span className="toggle__pill" aria-hidden="true">
+
+      <span className="toggle__pill">
         <input
           className="toggle__input"
           type="checkbox"
