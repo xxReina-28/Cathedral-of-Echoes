@@ -26,10 +26,10 @@ export default function Room1CandleMemory({ state, setState }) {
   const intensity = state.settings.intensity;
 
   const pace = useMemo(() => {
-    // low intensity plays a bit slower, easier on the nervous system
-    return intensity === "low"
-      ? { on: 520, gap: 320 }
-      : { on: 380, gap: 220 };
+  // hold adds extra time the candle stays visibly lit
+  return intensity === "low"
+    ? { on: 520, gap: 320, hold: 160 }
+    : { on: 380, gap: 220, hold: 140 };
   }, [intensity]);
 
   function clearTimers() {
@@ -91,7 +91,7 @@ export default function Room1CandleMemory({ state, setState }) {
         setFlash(null);
         cursor += 1;
         scheduleFlash();
-      }, pace.gap + pace.on);
+      }, pace.gap + pace.on + pace.hold);
 
       timeoutsRef.current.push(tOn, tOff);
     };
@@ -106,7 +106,7 @@ export default function Room1CandleMemory({ state, setState }) {
 
     // brief manual flash feedback
     setFlash(i);
-    const t = setTimeout(() => setFlash(null), Math.min(220, pace.on));
+    const t = setTimeout(() => setFlash(null), Math.min(260, pace.on + pace.hold));
     timeoutsRef.current.push(t);
 
     const expected = sequence[stepIndex];
