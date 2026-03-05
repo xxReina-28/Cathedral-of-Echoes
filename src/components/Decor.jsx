@@ -7,21 +7,26 @@ export default function Decor({ arachnophobia }) {
       <div className={`web web--tl ${arachnophobia ? "web--calm" : ""}`} aria-hidden="true" />
       <div className={`web web--tr ${arachnophobia ? "web--calm" : ""}`} aria-hidden="true" />
       <div className={`web web--bl ${arachnophobia ? "web--calm" : ""}`} aria-hidden="true" />
+      <div className={`web web--br ${arachnophobia ? "web--calm" : ""}`} aria-hidden="true" />
 
-      {/* Bats */}
+      {/* Bats . spread across page */}
       <div className="bats" aria-hidden="true">
         <span className="bat bat--1" />
         <span className="bat bat--2" />
         <span className="bat bat--3" />
         <span className="bat bat--4" />
         <span className="bat bat--5" />
+        <span className="bat bat--6" />
+        <span className="bat bat--7" />
+        <span className="bat bat--8" />
       </div>
 
-      {/* Optional spiders */}
+      {/* Spiders . hidden when arachnophobia on */}
       {!arachnophobia ? (
         <>
           <div className="spider spider--1" aria-hidden="true" />
           <div className="spider spider--2" aria-hidden="true" />
+          <div className="spider spider--3" aria-hidden="true" />
         </>
       ) : null}
 
@@ -38,17 +43,14 @@ export default function Decor({ arachnophobia }) {
         <span className="cross cross--2" />
       </div>
 
-      {/* Ghosts */}
+      {/* Ghosts . doubled, varied sizes, full page */}
       <div className="ghosts" aria-hidden="true">
-        <span className="ghost ghost--1" />
-        <span className="ghost ghost--2" />
-        <span className="ghost ghost--3" />
-      </div>
-
-      {/* Snakes */}
-      <div className="snakes" aria-hidden="true">
-        <span className="snake snake--1" />
-        <span className="snake snake--2" />
+        <span className="ghost ghost--1 ghost--sm" />
+        <span className="ghost ghost--2 ghost--md" />
+        <span className="ghost ghost--3 ghost--sm" />
+        <span className="ghost ghost--4 ghost--md" />
+        <span className="ghost ghost--5 ghost--sm" />
+        <span className="ghost ghost--6 ghost--md" />
       </div>
 
       {/* Poltergeist layer */}

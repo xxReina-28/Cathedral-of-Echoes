@@ -682,6 +682,7 @@ a{color:inherit}
 .web--tl{top:-40px; left:-40px; transform: rotate(10deg)}
 .web--tr{top:-50px; right:-50px; transform: rotate(-18deg)}
 .web--bl{bottom:-60px; left:-40px; transform: rotate(22deg)}
+.web--br{bottom:-60px; right:-60px; transform: rotate(-22deg)}
 
 .bats{
   position:fixed;
@@ -745,34 +746,36 @@ a{color:inherit}
   width: 20px;
   height: 20px;
   pointer-events:none;
-  opacity:.7;
+  opacity:.85;
 }
+
+/* red body */
 .spider:before{
   content:"";
   position:absolute; inset:6px;
   border-radius: 999px;
-  background: rgba(233,231,242,.16);
+  background: rgba(181,27,42,.72);
+  box-shadow: 0 0 14px rgba(181,27,42,.20);
 }
+
+/* silk line */
 .spider:after{
   content:"";
   position:absolute;
   left:50%;
-  top:-140px;
+  top:-160px;
   width: 1px;
-  height: 140px;
+  height: 160px;
   background: rgba(255,255,255,.12);
 }
-.spider--1{
-  top: -10px; right: 18%;
-  animation: dangle calc(3.8s / max(.35, var(--motion))) ease-in-out infinite;
-}
-.spider--2{
-  top: -12px; left: 22%;
-  animation: dangle calc(4.6s / max(.35, var(--motion))) ease-in-out infinite;
-}
+
+.spider--1{top: -10px; right: 18%; animation: dangle calc(3.8s / max(.35, var(--motion))) ease-in-out infinite}
+.spider--2{top: -12px; left: 22%;  animation: dangle calc(4.6s / max(.35, var(--motion))) ease-in-out infinite}
+.spider--3{top: -8px;  left: 52%;  animation: dangle calc(4.2s / max(.35, var(--motion))) ease-in-out infinite}
+
 @keyframes dangle{
   0%,100%{transform: translateY(0) rotate(-2deg)}
-  50%{transform: translateY(14px) rotate(2deg)}
+  50%{transform: translateY(16px) rotate(2deg)}
 }
 
 /* Crime scene markers */
@@ -832,20 +835,31 @@ a{color:inherit}
   inset:0;
   pointer-events:none;
   z-index:2;
-  opacity: calc(.72 * var(--haze));
+  opacity: 1;
 }
+
+/* Size variants */
+.ghost--sm{width: 92px; height: 124px}
+.ghost--md{width: 128px; height: 172px}
+
+/* Translucent white ghost */
 .ghost{
   position:absolute;
-  width: 120px;
-  height: 160px;
   border-radius: 80px 80px 60px 60px;
   background:
-    radial-gradient(circle at 50% 25%, rgba(255,255,255,.10), transparent 60%),
-    linear-gradient(180deg, rgba(233,231,242,.10), rgba(233,231,242,.03));
-  border: 1px solid rgba(255,255,255,.08);
-  box-shadow: 0 30px 120px rgba(0,0,0,.35);
-  mask: radial-gradient(circle at 50% 20%, #000 0 60%, transparent 86%);
+    radial-gradient(circle at 50% 22%, rgba(255,255,255,.28), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow:
+    0 30px 120px rgba(0,0,0,.35),
+    0 0 38px rgba(255,255,255,.08);
+  opacity: .65;
+  filter:
+    drop-shadow(0 0 18px rgba(255,255,255,.10));
+  mask: radial-gradient(circle at 50% 18%, #000 0 60%, transparent 90%);
 }
+
+/* faint eyes */
 .ghost:after{
   content:"";
   position:absolute;
@@ -854,17 +868,23 @@ a{color:inherit}
   width: 10px;
   height: 10px;
   border-radius: 99px;
-  background: rgba(211,176,107,.22);
-  box-shadow: 42px 0 0 rgba(211,176,107,.22);
-  opacity: .75;
+  background: rgba(255,255,255,.22);
+  box-shadow: 46px 0 0 rgba(255,255,255,.22);
+  opacity: .8;
 }
-.ghost--1{top: 22%; left: 8%; animation: ghostDrift calc(10s / max(.35, var(--motion))) ease-in-out infinite}
-.ghost--2{top: 48%; right: 10%; animation: ghostDrift calc(12s / max(.35, var(--motion))) ease-in-out infinite reverse}
-.ghost--3{bottom: 14%; left: 40%; animation: ghostDrift calc(14s / max(.35, var(--motion))) ease-in-out infinite}
+
+/* Spread them across full height */
+.ghost--1{top: 14%; left: 6%;  animation: ghostDrift calc(10s / max(.35, var(--motion))) ease-in-out infinite}
+.ghost--2{top: 26%; right: 7%; animation: ghostDrift calc(12s / max(.35, var(--motion))) ease-in-out infinite reverse}
+.ghost--3{top: 58%; left: 14%; animation: ghostDrift calc(13.5s / max(.35, var(--motion))) ease-in-out infinite}
+.ghost--4{top: 64%; right: 12%; animation: ghostDrift calc(11.5s / max(.35, var(--motion))) ease-in-out infinite reverse}
+.ghost--5{bottom: 10%; left: 38%; animation: ghostDrift calc(15s / max(.35, var(--motion))) ease-in-out infinite}
+.ghost--6{bottom: 16%; right: 32%; animation: ghostDrift calc(16s / max(.35, var(--motion))) ease-in-out infinite reverse}
+
 @keyframes ghostDrift{
-  0%,100%{transform: translate3d(0,0,0); opacity:.26}
-  45%{transform: translate3d(14px,-10px,0); opacity:.42}
-  70%{transform: translate3d(-12px,8px,0); opacity:.30}
+  0%,100%{transform: translate3d(0,0,0); opacity:.50}
+  45%{transform: translate3d(18px,-14px,0); opacity:.72}
+  70%{transform: translate3d(-14px,10px,0); opacity:.56}
 }
 
 /* Snakes */
