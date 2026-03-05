@@ -4,10 +4,22 @@ export default function Decor({ arachnophobia }) {
   return (
     <>
       {/* Cobwebs */}
-      <div className={`web web--tl ${arachnophobia ? "web--calm" : ""}`} aria-hidden="true" />
-      <div className={`web web--tr ${arachnophobia ? "web--calm" : ""}`} aria-hidden="true" />
-      <div className={`web web--bl ${arachnophobia ? "web--calm" : ""}`} aria-hidden="true" />
-      <div className={`web web--br ${arachnophobia ? "web--calm" : ""}`} aria-hidden="true" />
+      <div
+        className={`web web--tl ${arachnophobia ? "web--calm" : ""}`}
+        aria-hidden="true"
+      />
+      <div
+        className={`web web--tr ${arachnophobia ? "web--calm" : ""}`}
+        aria-hidden="true"
+      />
+      <div
+        className={`web web--bl ${arachnophobia ? "web--calm" : ""}`}
+        aria-hidden="true"
+      />
+      <div
+        className={`web web--br ${arachnophobia ? "web--calm" : ""}`}
+        aria-hidden="true"
+      />
 
       {/* Bats . spread across page */}
       <div className="bats" aria-hidden="true">
@@ -23,11 +35,16 @@ export default function Decor({ arachnophobia }) {
 
       {/* Spiders . hidden when arachnophobia on */}
       {!arachnophobia ? (
-        <>
-          <div className="spider spider--1" aria-hidden="true" />
-          <div className="spider spider--2" aria-hidden="true" />
-          <div className="spider spider--3" aria-hidden="true" />
-        </>
+        <div className="spiders" aria-hidden="true">
+          <span className="spiderLine spiderLine--1" />
+          <span className="spider spider--1" />
+
+          <span className="spiderLine spiderLine--2" />
+          <span className="spider spider--2" />
+
+          <span className="spiderLine spiderLine--3" />
+          <span className="spider spider--3" />
+        </div>
       ) : null}
 
       {/* Crime scene markers */}

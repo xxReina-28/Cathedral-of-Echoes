@@ -740,42 +740,86 @@ a{color:inherit}
 }
 
 /* Spiders */
+.spiders{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:2;
+  opacity:.9;
+}
+
+/* Silk lines anchored to the top webs */
+.spiderLine{
+  position:fixed;
+  top:-40px;
+  width: 1px;
+  height: calc(100vh + 80px);
+  background: rgba(255,255,255,.14);
+  filter: drop-shadow(0 0 6px rgba(255,255,255,.08));
+  opacity:.55;
+}
+
+/* Spider body */
 .spider{
   position:fixed;
   z-index:2;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   pointer-events:none;
-  opacity:.85;
+  opacity:.95;
+  transform: translateX(-50%);
+  will-change: transform;
 }
 
 /* red body */
 .spider:before{
   content:"";
-  position:absolute; inset:6px;
+  position:absolute; inset:4px;
   border-radius: 999px;
-  background: rgba(181,27,42,.72);
-  box-shadow: 0 0 14px rgba(181,27,42,.20);
+  background: rgba(181,27,42,.78);
+  box-shadow: 0 0 14px rgba(181,27,42,.22);
 }
 
-/* silk line */
+/* legs hint */
 .spider:after{
   content:"";
   position:absolute;
-  left:50%;
-  top:-160px;
-  width: 1px;
-  height: 160px;
-  background: rgba(255,255,255,.12);
+  inset:-3px;
+  border-radius: 999px;
+  border:1px solid rgba(181,27,42,.22);
+  opacity:.7;
 }
 
-.spider--1{top: -10px; right: 18%; animation: dangle calc(3.8s / max(.35, var(--motion))) ease-in-out infinite}
-.spider--2{top: -12px; left: 22%;  animation: dangle calc(4.6s / max(.35, var(--motion))) ease-in-out infinite}
-.spider--3{top: -8px;  left: 52%;  animation: dangle calc(4.2s / max(.35, var(--motion))) ease-in-out infinite}
+/* Positions . start at web areas, then crawl down */
+.spiderLine--1{right: 18%}
+.spiderLine--2{left: 22%}
+.spiderLine--3{left: 52%}
 
-@keyframes dangle{
-  0%,100%{transform: translateY(0) rotate(-2deg)}
-  50%{transform: translateY(16px) rotate(2deg)}
+.spider--1{top:-28px; right: 18%; animation: spiderCrawl1 calc(14s / max(.35, var(--motion))) linear infinite}
+.spider--2{top:-34px; left: 22%;  animation: spiderCrawl2 calc(18s / max(.35, var(--motion))) linear infinite}
+.spider--3{top:-30px; left: 52%;  animation: spiderCrawl3 calc(16s / max(.35, var(--motion))) linear infinite}
+
+/* Crawl from top to bottom with a tiny sideways wobble like the reference */
+@keyframes spiderCrawl1{
+  0%{transform: translateX(50%) translateY(-10px) rotate(-2deg)}
+  15%{transform: translateX(50%) translateY(12vh) rotate(2deg)}
+  50%{transform: translateX(50%) translateY(55vh) rotate(-2deg)}
+  85%{transform: translateX(50%) translateY(100vh) rotate(2deg)}
+  100%{transform: translateX(50%) translateY(120vh) rotate(-1deg)}
+}
+@keyframes spiderCrawl2{
+  0%{transform: translateX(-50%) translateY(-20px) rotate(2deg)}
+  20%{transform: translateX(-50%) translateY(18vh) rotate(-2deg)}
+  55%{transform: translateX(-50%) translateY(62vh) rotate(2deg)}
+  85%{transform: translateX(-50%) translateY(102vh) rotate(-2deg)}
+  100%{transform: translateX(-50%) translateY(122vh) rotate(1deg)}
+}
+@keyframes spiderCrawl3{
+  0%{transform: translateX(-50%) translateY(-12px) rotate(-1deg)}
+  18%{transform: translateX(-50%) translateY(16vh) rotate(2deg)}
+  52%{transform: translateX(-50%) translateY(58vh) rotate(-2deg)}
+  86%{transform: translateX(-50%) translateY(104vh) rotate(2deg)}
+  100%{transform: translateX(-50%) translateY(121vh) rotate(-1deg)}
 }
 
 /* Crime scene markers */
@@ -838,53 +882,57 @@ a{color:inherit}
   opacity: 1;
 }
 
-/* Size variants */
-.ghost--sm{width: 92px; height: 124px}
-.ghost--md{width: 128px; height: 172px}
+/* Smaller size variants */
+.ghost--sm{width: 70px; height: 92px}
+.ghost--md{width: 92px; height: 124px}
 
 /* Translucent white ghost */
 .ghost{
   position:absolute;
   border-radius: 80px 80px 60px 60px;
   background:
-    radial-gradient(circle at 50% 22%, rgba(255,255,255,.28), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
-  border: 1px solid rgba(255,255,255,.14);
+    radial-gradient(circle at 50% 22%, rgba(255,255,255,.32), transparent 62%),
+    linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.055));
+  border: 1px solid rgba(255,255,255,.16);
   box-shadow:
     0 30px 120px rgba(0,0,0,.35),
     0 0 38px rgba(255,255,255,.08);
-  opacity: .65;
-  filter:
-    drop-shadow(0 0 18px rgba(255,255,255,.10));
-  mask: radial-gradient(circle at 50% 18%, #000 0 60%, transparent 90%);
+  opacity: .72;
+  filter: drop-shadow(0 0 16px rgba(255,255,255,.10));
+  mask: radial-gradient(circle at 50% 18%, #000 0 62%, transparent 92%);
+  will-change: transform, opacity;
 }
 
 /* faint eyes */
 .ghost:after{
   content:"";
   position:absolute;
-  left: 18px;
-  top: 52px;
-  width: 10px;
-  height: 10px;
+  left: 14px;
+  top: 40px;
+  width: 8px;
+  height: 8px;
   border-radius: 99px;
-  background: rgba(255,255,255,.22);
-  box-shadow: 46px 0 0 rgba(255,255,255,.22);
-  opacity: .8;
+  background: rgba(255,255,255,.24);
+  box-shadow: 34px 0 0 rgba(255,255,255,.24);
+  opacity: .85;
 }
 
 /* Spread them across full height */
-.ghost--1{top: 14%; left: 6%;  animation: ghostDrift calc(10s / max(.35, var(--motion))) ease-in-out infinite}
-.ghost--2{top: 26%; right: 7%; animation: ghostDrift calc(12s / max(.35, var(--motion))) ease-in-out infinite reverse}
-.ghost--3{top: 58%; left: 14%; animation: ghostDrift calc(13.5s / max(.35, var(--motion))) ease-in-out infinite}
-.ghost--4{top: 64%; right: 12%; animation: ghostDrift calc(11.5s / max(.35, var(--motion))) ease-in-out infinite reverse}
-.ghost--5{bottom: 10%; left: 38%; animation: ghostDrift calc(15s / max(.35, var(--motion))) ease-in-out infinite}
-.ghost--6{bottom: 16%; right: 32%; animation: ghostDrift calc(16s / max(.35, var(--motion))) ease-in-out infinite reverse}
+.ghost--1{top: 12%; left: 6%;  animation: ghostWisp calc(6.6s / max(.35, var(--motion))) ease-in-out infinite}
+.ghost--2{top: 24%; right: 7%; animation: ghostWisp calc(7.4s / max(.35, var(--motion))) ease-in-out infinite reverse}
+.ghost--3{top: 52%; left: 12%; animation: ghostWisp calc(8.2s / max(.35, var(--motion))) ease-in-out infinite}
+.ghost--4{top: 60%; right: 12%; animation: ghostWisp calc(7.1s / max(.35, var(--motion))) ease-in-out infinite reverse}
+.ghost--5{bottom: 12%; left: 34%; animation: ghostWisp calc(8.8s / max(.35, var(--motion))) ease-in-out infinite}
+.ghost--6{bottom: 18%; right: 28%; animation: ghostWisp calc(9.2s / max(.35, var(--motion))) ease-in-out infinite reverse}
 
-@keyframes ghostDrift{
-  0%,100%{transform: translate3d(0,0,0); opacity:.50}
-  45%{transform: translate3d(18px,-14px,0); opacity:.72}
-  70%{transform: translate3d(-14px,10px,0); opacity:.56}
+/* Tighter, loopier motion like the reference gif */
+@keyframes ghostWisp{
+  0%{transform: translate3d(0,0,0) rotate(-.6deg) scale(.98); opacity:.55}
+  18%{transform: translate3d(10px,-8px,0) rotate(.5deg) scale(1.01); opacity:.76}
+  38%{transform: translate3d(-8px,-2px,0) rotate(-.4deg) scale(1.00); opacity:.66}
+  62%{transform: translate3d(12px,10px,0) rotate(.6deg) scale(1.02); opacity:.78}
+  82%{transform: translate3d(-10px,6px,0) rotate(-.5deg) scale(1.00); opacity:.62}
+  100%{transform: translate3d(0,0,0) rotate(-.6deg) scale(.98); opacity:.55}
 }
 
 /* Snakes */
