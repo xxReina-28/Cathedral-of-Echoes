@@ -1,19 +1,14 @@
 import React, { useMemo, useState } from "react";
 import RoomShell from "../components/RoomShell.jsx";
 
-// A small symbol font using plain text glyphs.
-// You can swap these for SVG later without changing logic.
 const SYMBOLS = ["☩", "✶", "✣", "❖", "✥", "✦", "✧", "☾", "☉", "⚶", "⚸", "✺"];
-
 const PHRASE = "ECHOES REMAIN";
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-// Deterministic substitution map for the phrase letters only.
 function buildCipher(phrase) {
   const uniqLetters = Array.from(new Set(phrase.replace(/[^A-Z]/g, "").split("")));
   const shuffledSymbols = [...SYMBOLS];
 
-  // Simple deterministic shuffle.
   for (let i = shuffledSymbols.length - 1; i > 0; i--) {
     const j = (i * 7 + 3) % (i + 1);
     [shuffledSymbols[i], shuffledSymbols[j]] = [shuffledSymbols[j], shuffledSymbols[i]];
@@ -36,6 +31,8 @@ function sanitizeChar(s) {
 export default function Room2StainedGlass({ state, setState, locked }) {
   const solved = state.solved.room2;
   const [toast, setToast] = useState("");
+  const [hintLevel, setHintLevel] = useState(0);
+  const [jumpscare, setJumpscare] = useState(false);
 
   const cipher = useMemo(() => buildCipher(PHRASE), []);
   const encoded = useMemo(() => {
@@ -47,19 +44,14 @@ export default function Room2StainedGlass({ state, setState, locked }) {
 
   const inputs = state.roomData?.room2?.inputs || {};
 
-  const lettersInPhrase = useMemo(() => {
-    const set = new Set(PHRASE.replace(/[^A-Z]/g, "").split(""));
-    return Array.from(set).sort();
-  }, []);
-
   const revealedPairs = useMemo(() => {
-    // Reveal a few pairs as "fractures" in the glass.
-    // Enough to be solvable without brute force, but still a puzzle.
     const picks = ["E", "O", "A"];
     const pairs = [];
+
     for (const ch of picks) {
       if (cipher[ch]) pairs.push([cipher[ch], ch]);
     }
+
     return pairs;
   }, [cipher]);
 
@@ -73,14 +65,14 @@ export default function Room2StainedGlass({ state, setState, locked }) {
   }, [inputs, cipher]);
 
   const isCorrect = useMemo(() => {
-    const decodedString = currentDecoded.join("");
-    return decodedString === PHRASE;
+    return currentDecoded.join("") === PHRASE;
   }, [currentDecoded]);
 
   function setInput(sym, value) {
     if (locked || solved) return;
 
     const next = { ...inputs, [sym]: sanitizeChar(value) };
+
     setState((s) => ({
       ...s,
       roomData: {
@@ -95,6 +87,7 @@ export default function Room2StainedGlass({ state, setState, locked }) {
 
   function clearAll() {
     if (locked) return;
+
     setState((s) => ({
       ...s,
       roomData: {
@@ -105,6 +98,7 @@ export default function Room2StainedGlass({ state, setState, locked }) {
         }
       }
     }));
+
     setToast("Glass wiped clean.");
     setTimeout(() => setToast(""), 900);
   }
@@ -117,12 +111,31 @@ export default function Room2StainedGlass({ state, setState, locked }) {
         ...s,
         solved: { ...s.solved, room2: true }
       }));
+
       setToast("The rose window exhales. The cathedral accepts the name.");
       setTimeout(() => setToast(""), 1300);
     } else {
       setToast("Wrong resonance. Try again.");
       setTimeout(() => setToast(""), 900);
     }
+  }
+
+  function requestHint() {
+    if (locked || solved || jumpscare) return;
+
+    setJumpscare(true);
+
+    setTimeout(() => {
+      setJumpscare(false);
+      setHintLevel((level) => Math.min(level + 1, 3));
+    }, 1300);
+  }
+
+  function getHintText() {
+    if (hintLevel === 0) return "";
+    if (hintLevel === 1) return "Hint 1: The phrase has two words. The second word starts with R.";
+    if (hintLevel === 2) return "Hint 2: Repeated symbols mean repeated letters. Look for the symbol that appears twice in the first word.";
+    return "Hint 3: The answer is something the cathedral keeps repeating: ECHOES REMAIN.";
   }
 
   return (
@@ -137,6 +150,17 @@ export default function Room2StainedGlass({ state, setState, locked }) {
         </div>
       }
     >
+      {jumpscare ? (
+        <div className="jumpscare" aria-hidden="true">
+          <div className="jumpscare__face">
+            <span className="jumpscare__eye jumpscare__eye--left" />
+            <span className="jumpscare__eye jumpscare__eye--right" />
+            <span className="jumpscare__mouth" />
+          </div>
+          <div className="jumpscare__text">LOOK CLOSER</div>
+        </div>
+      ) : null}
+
       <div className="lore">
         <p>
           A circular window of fractured color watches you. It does not blink. It translates.
@@ -196,7 +220,11 @@ export default function Room2StainedGlass({ state, setState, locked }) {
                 Each symbol represents one letter across the whole phrase.
               </div>
             </div>
+
             <div className="decoder__actions">
+              <button className="btn btn--ghost" onClick={requestHint} disabled={locked || solved}>
+                Hint
+              </button>
               <button className="btn btn--ghost" onClick={clearAll} disabled={locked}>
                 Clear
               </button>
@@ -206,8 +234,18 @@ export default function Room2StainedGlass({ state, setState, locked }) {
             </div>
           </div>
 
+          {hintLevel > 0 ? (
+            <div className="hintBox">
+              <strong>Unlocked Hint {hintLevel}:</strong> {getHintText()}
+            </div>
+          ) : (
+            <div className="hintBox hintBox--warning">
+              Hint available. Payment required: one jumpscare.
+            </div>
+          )}
+
           <div className="decoderGrid">
-            {Object.values(buildCipher(PHRASE))
+            {Object.values(cipher)
               .filter((v, i, arr) => arr.indexOf(v) === i)
               .map((sym) => {
                 const val = inputs[sym] || "";
