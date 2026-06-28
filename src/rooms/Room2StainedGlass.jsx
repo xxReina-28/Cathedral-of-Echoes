@@ -35,6 +35,7 @@ export default function Room2StainedGlass({ state, setState, locked }) {
   const [jumpscare, setJumpscare] = useState(false);
 
   const cipher = useMemo(() => buildCipher(PHRASE), []);
+
   const encoded = useMemo(() => {
     return PHRASE.split("").map((ch) => {
       if (ch === " ") return " ";
@@ -135,7 +136,7 @@ export default function Room2StainedGlass({ state, setState, locked }) {
     if (hintLevel === 0) return "";
     if (hintLevel === 1) return "Hint 1: The phrase has two words. The second word starts with R.";
     if (hintLevel === 2) return "Hint 2: Repeated symbols mean repeated letters. Look for the symbol that appears twice in the first word.";
-    return "Hint 3: The answer is something the cathedral keeps repeating: ECHOES REMAIN.";
+    return "Hint 3: The answer is ECHOES REMAIN.";
   }
 
   return (
@@ -158,6 +159,26 @@ export default function Room2StainedGlass({ state, setState, locked }) {
             <span className="jumpscare__mouth" />
           </div>
           <div className="jumpscare__text">LOOK CLOSER</div>
+        </div>
+      ) : null}
+
+      {solved ? (
+        <div className="endingPopup">
+          <div className="endingPopup__card">
+            <h2>Congratulations for solving.</h2>
+            <p>I'm too lazy to finish part 3 so thank you for playing.</p>
+            <button
+              className="btn"
+              onClick={() => {
+                setState((s) => ({
+                  ...s,
+                  activeRoomId: "room1"
+                }));
+              }}
+            >
+              Return to Nave
+            </button>
+          </div>
         </div>
       ) : null}
 
